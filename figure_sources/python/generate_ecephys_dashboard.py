@@ -50,6 +50,7 @@ def generate_static_svg(units_data):
         mice = sorted(qc_df['mouse_id'].dropna().unique())
         
         # 1. Plot individual mice as thin, semi-transparent lines
+        # Using Okabe-Ito safe colors: Blue (0, 114, 178) and Vermillion (213, 94, 0)
         for mouse in mice:
             mouse_df = qc_df[qc_df['mouse_id'] == mouse]
             first_m = mouse_df[mouse_df['session_stage'] == 'First'][metric].dropna().sort_values()
@@ -62,10 +63,10 @@ def generate_static_svg(units_data):
 
             if len(first_m) > 0:
                 y_f = np.arange(1, len(first_m) + 1) / len(first_m) * 100
-                fig.add_trace(go.Scatter(x=first_m, y=y_f, mode='lines', line=dict(color='rgba(44, 160, 44, 0.25)', width=1, shape='hv'), showlegend=False, hoverinfo='skip'), row=row, col=col)
+                fig.add_trace(go.Scatter(x=first_m, y=y_f, mode='lines', line=dict(color='rgba(0, 114, 178, 0.25)', width=1, shape='hv'), showlegend=False, hoverinfo='skip'), row=row, col=col)
             if len(last_m) > 0:
                 y_l = np.arange(1, len(last_m) + 1) / len(last_m) * 100
-                fig.add_trace(go.Scatter(x=last_m, y=y_l, mode='lines', line=dict(color='rgba(214, 39, 40, 0.25)', width=1, shape='hv'), showlegend=False, hoverinfo='skip'), row=row, col=col)
+                fig.add_trace(go.Scatter(x=last_m, y=y_l, mode='lines', line=dict(color='rgba(213, 94, 0, 0.25)', width=1, shape='hv'), showlegend=False, hoverinfo='skip'), row=row, col=col)
 
         # 2. Plot the aggregate dataset as a thinner solid line on top
         first_vals = qc_df[qc_df['session_stage'] == 'First'][metric].dropna().sort_values()
@@ -78,13 +79,13 @@ def generate_static_svg(units_data):
         y_first = np.arange(1, len(first_vals) + 1) / len(first_vals) * 100
         y_last = np.arange(1, len(last_vals) + 1) / len(last_vals) * 100
         
-        fig.add_trace(go.Scatter(x=first_vals, y=y_first, mode='lines', line=dict(color='#2ca02c', width=2.0, shape='hv'), showlegend=False), row=row, col=col)
-        fig.add_trace(go.Scatter(x=last_vals, y=y_last, mode='lines', line=dict(color='#d62728', width=2.0, shape='hv'), showlegend=False), row=row, col=col)
+        fig.add_trace(go.Scatter(x=first_vals, y=y_first, mode='lines', line=dict(color='#0072B2', width=2.0, shape='hv'), showlegend=False), row=row, col=col)
+        fig.add_trace(go.Scatter(x=last_vals, y=y_last, mode='lines', line=dict(color='#D55E00', width=2.0, shape='hv'), showlegend=False), row=row, col=col)
 
         # Add the 'within-plot' legend to the bottom right whitespace
         annotations.append(dict(
             x=0.96, y=0.06, xref=f"{xref} domain", yref=f"{yref} domain",
-            text="<span style='color:#2ca02c;'><b>──</b></span> First Session<br><span style='color:#d62728;'><b>──</b></span> Last Session",
+            text="<span style='color:#0072B2;'><b>──</b></span> First Session<br><span style='color:#D55E00;'><b>──</b></span> Last Session",
             showarrow=False,
             xanchor="right", yanchor="bottom",
             bgcolor="rgba(255, 255, 255, 0.9)",
@@ -1101,8 +1102,8 @@ def generate_html(data_dict):
             const trLast = buildCumulative(lastData);
 
             const traces = [
-                { x: trFirst.x, y: trFirst.y, mode: 'lines', line: {shape: 'hv', width: 3, color: '#2ca02c'}, name: 'First Session' },
-                { x: trLast.x, y: trLast.y, mode: 'lines', line: {shape: 'hv', width: 3, color: '#d62728'}, name: 'Last Session' }
+                { x: trFirst.x, y: trFirst.y, mode: 'lines', line: {shape: 'hv', width: 3, color: '#0072B2'}, name: 'First Session' },
+                { x: trLast.x, y: trLast.y, mode: 'lines', line: {shape: 'hv', width: 3, color: '#D55E00'}, name: 'Last Session' }
             ];
 
             const useLogX = document.getElementById('log-x-axis') && document.getElementById('log-x-axis').checked;
@@ -1483,8 +1484,8 @@ def generate_html(data_dict):
             });
 
             const traces = [
-                buildTrace(data.filter(d => d.cohort === 'Motor'), 'Motor', '#1f77b4'),
-                buildTrace(data.filter(d => d.cohort === 'Sequence'), 'Sequence', '#d62728')
+                buildTrace(data.filter(d => d.cohort === 'Motor'), 'Motor', '#0072B2'),
+                buildTrace(data.filter(d => d.cohort === 'Sequence'), 'Sequence', '#D55E00')
             ].filter(t => t.x.length > 0);
 
             const useLogX = document.getElementById('log-x-axis') && document.getElementById('log-x-axis').checked;
@@ -2407,5 +2408,4 @@ if __name__ == "__main__":
     generate_html(master_data)
 
     print("\nSUCCESS! Both SVG and HTML were generated.")
-
 
