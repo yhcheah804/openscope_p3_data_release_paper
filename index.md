@@ -1058,13 +1058,16 @@ Draft plan for unit extraction and signal-to-noise analysis across recording mod
 
 ### Neuropixels recordings
 
-- signal-to-noise
+To support repeated targeting while avoiding blood vessels, each probe's entry point was shifted slightly from its position on the previous day. Across 60 unit-bearing sessions from 16 mice, mean QC-passing unit yield per recorded probe declined from 100% of the day-1 baseline to 80.9% on day 4 ([Supplementary Figure 2](#fig-supp-neuropixels-unit-yield)). We comprehensively evaluated unit stability, signal-to-noise ratio, and physical drift across the entire dataset to ensure robust downstream analyses.
 
-- Stability across one session
+:::{iframe} ./interactive/openscope_qc_dashboard.html
+:label: fig-ecephys-qc-dashboard
+:width: 100%
+:title: Neuropixels Unit Quality Control and Stability
+:placeholder: ./images/figures/generated/openscope_qc_dashboard_static.svg
 
-- Quality control
-
-- To support repeated targeting while avoiding blood vessels, each probe's entry point was shifted slightly from its position on the previous day. Across 60 unit-bearing sessions from 16 mice, mean QC-passing unit yield per recorded probe declined from 100% of the day-1 baseline to 80.9% on day 4 ([Supplementary Figure 2](#fig-supp-neuropixels-unit-yield)).
+Neuropixels unit quality control and signal stability across recording days. The committed analysis snapshot contains extracted units from 60 sessions and 16 mice. Displayed distributions include only units passing strict quality-control thresholds: inter-spike interval (ISI) violations ratio < 0.01, presence ratio > 0.90, amplitude cutoff < 0.10, signal-to-noise ratio (SNR) ≥ 3.0, and a finite cortical depth, excluding unlabeled ('void') areas. **A,** Empirical cumulative distribution functions (ECDF) of unit SNR. Thick lines denote the aggregate population across all mice for the first (green) and last (red) recording sessions. Thin step lines indicate distributions for individual mice. The horizontal axis is log-scaled. **B,** ECDF of ISI violations ratio, plotted on a log-scaled horizontal axis, showing unit contamination across longitudinal insertions. **C,** Physical stability measured by peak-to-peak drift (µm). The horizontal axis is clipped to the 99th percentile of the aggregate distribution. **D,** Mean unit SNR mapped across mice and depth from cortical entry (0 = surface). Heatmap bins (50 µm) average the SNR of all QC-passing units within that depth interval for each individual mouse. Figures are regenerated offline from the committed snapshot and provenance derived from [Dandiset 001637](https://dandiarchive.org/dandiset/001637/draft/files).
+:::
 
 ### Mesoscope two photon imaging
 
